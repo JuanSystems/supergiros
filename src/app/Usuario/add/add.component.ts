@@ -1,0 +1,96 @@
+import { Roles } from './../../modelo/Roles';
+import { ServiceService } from './../../Service/service.service';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/modelo/Usuario';
+import { IfStmt } from '@angular/compiler';
+
+@Component({
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css'],
+})
+export class AddComponent implements OnInit {
+  datos;
+  estados;
+
+  // Seleccionamos o iniciamos el valor '0' del <select>
+  opcionSeleccionado: string = '0';
+  verSeleccion: string = '';
+
+  opcionSeleccionadoEstado: string = '0';
+  verSeleccionEstado: string = '';
+
+  usuario: Usuario = new Usuario();
+  roles: Roles[] = [];
+  constructor(private router: Router, private service: ServiceService) {
+    this.estados = ['Activo', 'Inactivo'];
+
+    this.service.getRoles().subscribe((data) => {
+      this.datos = new Array(data.length - 1);
+      for (let i = 0; i < 5; i++) {
+        this.datos[i] = data[i].rol;
+      }
+    });
+  }
+
+  getIndexRol() {
+    let index = 0;
+    for (let i = 0; i < 5; i++) {
+      if (this.datos[i] == this.verSeleccion) {
+        index = i;
+      }
+    }
+    return index;
+  }
+  getIndexEstado() {
+    let index = 0;
+    for (let i = 0; i < 5; i++) {
+      if (this.estados[i] == this.verSeleccionEstado) {
+        index = i;
+      }
+    }
+    return index;
+  }
+  capturar() {
+    // Pasamos el valor seleccionado a la variable verSeleccion
+    this.verSeleccion = this.opcionSeleccionado;
+    // this.usuario.estado= this.getIndex()+1;
+  }
+  capturarestado() {
+    // Pasamos el valor seleccionado a la variable verSeleccion
+    this.verSeleccionEstado = this.opcionSeleccionadoEstado;
+  }
+
+  ngOnInit() {}
+
+  Guardar() {
+    this.usuario.rol = this.getIndexRol() + 1;
+    this.usuario.estado = this.getIndexEstado() + 1;
+    console.log('rol', this.usuario.rol, 'estado', this.usuario.estado);
+
+    if (
+      this.usuario.cedula == 0 ||
+      this.usuario.email.length == 0 ||
+      this.usuario.estado == 0 ||
+      this.usuario.nitempresa.length == 0 ||
+      this.usuario.primerapellido.length == 0 ||
+      this.usuario.segundoapellido.length == 0 ||
+      this.usuario.primernombre.length == 0 ||
+      this.usuario.segundonombre.length == 0 ||
+      this.usuario.rol == 0
+    ) {
+      console.log(this.usuario.estado);
+
+      alert('Por favor llene todos los campos...!!!');
+    } else if(this.usuario.cedula>999999999){
+      alert('Numero de cedula demasiado grande');
+    }
+    else {
+      this.service.createUsuario(this.usuario).subscribe((data) => {
+        alert('Se Agrego con Exito...!!!');
+        this.router.navigate(['listar']);
+      });
+    }
+  }
+}

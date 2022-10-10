@@ -1,0 +1,61 @@
+<div class="container col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3>Modificar Datos</h3>
+      </div>
+      <div class="card-body">
+        <form action="">
+            <div class="form-group">
+                <label for="">Cedula:</label>
+            <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" type="number" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Primer Nombre:</label>
+            <input  [(ngModel)]="usuario.primernombre" name="primernombre" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Segundo Nombre:</label>
+            <input  [(ngModel)]="usuario.segundonombre" name="segundonombre" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Primer Apellido:</label>
+            <input  [(ngModel)]="usuario.primerapellido" name="primerapellido" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Segundo Apellido:</label>
+            <input  [(ngModel)]="usuario.segundoapellido" name="segundoapellido" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Email:</label>
+            <input  [(ngModel)]="usuario.email" name="email" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Nit empresa:</label>
+            <input  [(ngModel)]="usuario.nitempresa" name="empresa" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Seleccione un rol:</label>
+                <select [(ngModel)]="opcionSeleccionado" class="form-control selectpicker" name="rol" (change)="capturar()">
+                  <option value="0">Selecciona un Rol</option>
+                  <option *ngFor="let dato of datos">
+                    {{dato}}
+                  </option>
+              </select>
+              <p [hidden]="opcionSeleccionado == '0'">Haz seleccionado la opción # {{ verSeleccion }}</p>
+            </div>
+            <div class="form-group">
+                <label for="">Estado:</label>
+                <select [(ngModel)]="opcionSeleccionadoEstado" class="form-control selectpicker" name="estado" (change)="capturarestado()">
+                  <option value="0">Selecciona un Estado</option>
+                  <option *ngFor="let estado of estados">
+                    {{estado}}
+                  </option>
+              </select>
+              <p [hidden]="opcionSeleccionadoEstado == '0'">Haz seleccionado la opción # {{ verSeleccionEstado }}</p>
+            </div>
+
+            <button (click)="Actualizar(usuario)" class="btn btn-danger">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
